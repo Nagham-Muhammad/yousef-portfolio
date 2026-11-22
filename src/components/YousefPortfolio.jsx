@@ -13,37 +13,37 @@ const reelsData = [
   {
     id: 1,
     title: 'Reel 01',
-    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795203519/Siko_1-6.mp4',
+    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795203509/%D9%8A%D9%88%D8%B3%D9%81_%D8%AE%D9%85%D9%8A%D8%B3-12.mp4',
   },
   {
     id: 2,
     title: 'Reel 02',
-    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795203511/Hindi_1-4.mp4',
+    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795203434/7-3.mp4',
   },
   {
     id: 3,
     title: 'Reel 03',
-    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795203509/%D9%8A%D9%88%D8%B3%D9%81_%D8%AE%D9%85%D9%8A%D8%B3-12.mp4',
+    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795203465/Salma_%D8%A7%D9%84%D9%88%D8%A7%D9%86_%D9%85%D9%86_%D8%BA%D9%8A%D8%B1_%D9%84%D9%88%D8%AC%D9%88-5.mp4',
   },
   {
     id: 4,
     title: 'Reel 04',
-    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795203508/%D8%A7%D9%84%D9%83%D9%88%D8%AF-7.mp4',
+    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795203450/%D8%B9%D8%AF%D9%85_%D9%88%D8%AC%D9%88%D8%AF_%D8%B9%D9%82%D8%AF_%D8%AA%D8%B9%D8%AF%D9%8A%D9%84_-8.mp4',
   },
   {
     id: 5,
     title: 'Reel 05',
-    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795203470/10-1.mp4',
+    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795203511/Hindi_1-4.mp4',
   },
   {
     id: 6,
     title: 'Reel 06',
-    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795203465/Salma_%D8%A7%D9%84%D9%88%D8%A7%D9%86_%D9%85%D9%86_%D8%BA%D9%8A%D8%B1_%D9%84%D9%88%D8%AC%D9%88-5.mp4',
+    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795203519/Siko_1-6.mp4',
   },
   {
     id: 7,
     title: 'Reel 07',
-    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795203464/%D9%81%D8%B1%D9%88%D9%82_%D8%A7%D9%84%D8%AA%D8%B9%D9%84%D9%85_%D8%AA%D8%B9%D8%AF%D9%8A%D9%84-9.mp4',
+    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795265507/Monafasa_1-1.mp4',
   },
   {
     id: 8,
@@ -58,12 +58,12 @@ const reelsData = [
   {
     id: 10,
     title: 'Reel 10',
-    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795203450/%D8%B9%D8%AF%D9%85_%D9%88%D8%AC%D9%88%D8%AF_%D8%B9%D9%82%D8%AF_%D8%AA%D8%B9%D8%AF%D9%8A%D9%84_-8.mp4',
+    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795203508/%D8%A7%D9%84%D9%83%D9%88%D8%AF-7.mp4',
   },
   {
     id: 11,
     title: 'Reel 11',
-    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795203434/7-3.mp4',
+    videoSrc: 'https://res.cloudinary.com/vsttlpiy/video/upload/v1795203470/10-1.mp4',
   },
   {
     id: 12,
@@ -100,7 +100,9 @@ function ReelCard({ reel, isPlaying, onTogglePlay, onExpand, videoRef }) {
               preload="metadata"
               playsInline
               controls={isPlaying}
-              controlsList="nofullscreen"
+              controlsList="nodownload nofullscreen"
+              disablePictureInPicture
+              onContextMenu={(e) => e.preventDefault()}
               onEnded={() => {
                 if (isPlaying) onTogglePlay(reel.id);
               }}
@@ -152,7 +154,6 @@ function ReelCard({ reel, isPlaying, onTogglePlay, onExpand, videoRef }) {
         <h3 className="text-base font-semibold text-white group-hover:text-[#38bdf8] transition-colors">
           {reel.title}
         </h3>
-        <p className="text-xs text-neutral-400 mt-1">{reel.subtitle}</p>
       </div>
     </div>
   );
@@ -248,10 +249,14 @@ export default function VideoPortfolio() {
       {/* 1. Navbar Section */}
       <header className="sticky top-0 z-50 bg-[#030712]/80 backdrop-blur-md border-b border-blue-950/40">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="cursor-pointer" onClick={(e) => handleNavClick(e, 'showreel')}>
-            <span className="text-xl font-bold tracking-wider text-white">
+          <div>
+            <a
+              href="#showreel"
+              onClick={(e) => handleNavClick(e, 'showreel')}
+              className="text-xl font-bold tracking-wider text-white cursor-pointer"
+            >
               YOUSEF <span className="text-[#38bdf8]">.</span>
-            </span>
+            </a>
           </div>
 
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
@@ -364,6 +369,9 @@ export default function VideoPortfolio() {
             muted
             loop
             playsInline
+            controlsList="nodownload nofullscreen"
+            disablePictureInPicture
+            onContextMenu={(e) => e.preventDefault()}
             className="w-full h-full object-cover"
           />
         </div>
@@ -394,7 +402,7 @@ export default function VideoPortfolio() {
             </div>
 
             <p className="text-neutral-300 text-base leading-relaxed">
-              Hi, I'm Joe Hassan — a passionate Video Editor and Digital Creator based in Alexandria, Egypt. I specialize in turning raw footage into compelling cinematic experiences, fast-paced vertical reels, and high-retention content that captures attention from the very first second.
+              Hi, I'm Yousef — a passionate Video Editor and Digital Creator based in Alexandria, Egypt. I specialize in turning raw footage into compelling cinematic experiences, fast-paced vertical reels, and high-retention content that captures attention from the very first second.
             </p>
 
             <p className="text-neutral-400 text-sm leading-relaxed">
@@ -708,7 +716,9 @@ export default function VideoPortfolio() {
               src={expandedReel.videoSrc}
               poster={getCloudinaryPoster(expandedReel.videoSrc, 2)}
               controls
-              controlsList="nofullscreen"
+              controlsList="nodownload nofullscreen"
+              disablePictureInPicture
+              onContextMenu={(e) => e.preventDefault()}
               autoPlay
               playsInline
               onLoadedMetadata={(e) => {

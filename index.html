@@ -2,9 +2,83 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/src/assets/icons/Joe_Logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Yousef_Portfolio</title>
+    <script type="module">
+      import joeLogoUrl from '/src/assets/icons/Joe_Logo.png';
+
+      const setZoomedFavicon = (src, size = 64) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          const tempCanvas = document.createElement('canvas');
+          tempCanvas.width = img.width;
+          tempCanvas.height = img.height;
+          const tempCtx = tempCanvas.getContext('2d');
+          if (!tempCtx) return;
+
+          tempCtx.drawImage(img, 0, 0);
+          const { data, width, height } = tempCtx.getImageData(0, 0, img.width, img.height);
+
+          let minX = width;
+          let minY = height;
+          let maxX = 0;
+          let maxY = 0;
+
+          // إيجاد حدود اللوجو الفعلية لتقليل الهوامش الفارغة وتكبيره داخل التاب
+          for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+              const idx = (y * width + x) * 4;
+              const r = data[idx];
+              const g = data[idx + 1];
+              const b = data[idx + 2];
+              const a = data[idx + 3];
+              const isVisible = a > 30 && Math.max(r, g, b) > 28;
+
+              if (isVisible) {
+                if (x < minX) minX = x;
+                if (y < minY) minY = y;
+                if (x > maxX) maxX = x;
+                if (y > maxY) maxY = y;
+              }
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) return;
+
+          if (maxX > minX && maxY > minY) {
+            const cropW = maxX - minX + 1;
+            const cropH = maxY - minY + 1;
+            const side = Math.max(cropW, cropH);
+            const centerX = minX + cropW / 2;
+            const centerY = minY + cropH / 2;
+            const sx = centerX - side / 2;
+            const sy = centerY - side / 2;
+
+            ctx.drawImage(img, sx, sy, side, side, 0, 0, size, size);
+          } else {
+            ctx.drawImage(img, 0, 0, size, size);
+          }
+
+          let iconLink = document.querySelector("link[rel~='icon']");
+          if (!iconLink) {
+            iconLink = document.createElement('link');
+            iconLink.rel = 'icon';
+            document.head.appendChild(iconLink);
+          }
+          iconLink.type = 'image/png';
+          iconLink.href = canvas.toDataURL('image/png');
+        };
+        img.src = src;
+      };
+
+      setZoomedFavicon(joeLogoUrl, 64);
+    </script>
   </head>
   <body>
     <div id="root"></div>
